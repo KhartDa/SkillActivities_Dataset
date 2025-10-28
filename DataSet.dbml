@@ -5,26 +5,56 @@ Table follows {
   following_user_id integer
   followed_user_id integer
   created_at timestamp
+
+  indexes {
+    (following_user_id, followed_user_id) [pk] // prevent duplicates
+  }
 }
 
-Table users {
-  id integer [primary key]
-  username varchar
-  role varchar
-  created_at timestamp
+// Table users {
+//   U_ID integer [primary key]
+//   U_First_Name varchar
+//   U_Last_Name varchar
+//   U_Email text
+//   U_PhoneNum varchar
+//   // created_at timestamp
+// }
+
+Table activity {
+  Activity_Id integer [primary key]
+  Activity_Title text
+  Activity_Price text
+  Academics_Id integer [ref: >academics.Academics_Id]
+ 
+  difficulty_id integer [ref: > activity_difficulty.Difficulty_Id]
 }
 
-Table posts {
-  id integer [primary key]
-  title varchar
-  body text [note: 'Content of the post']
-  user_id integer [not null]
-  status varchar
-  created_at timestamp
+Table activity_occurrence {
+  Occurrence_Id integer [primary key]
+  Activity_Id integer [not null, ref: > activity.Activity_Id] 
+  Start_Date date
+  End_Date date
+  Start_Time time
+  End_Time time
+  Timezone text
 }
 
-Ref user_posts: posts.user_id > users.id // many-to-one
+Table activity_difficulty {
+  Difficulty_Id integer [primary key]
+  name varchar
+  pressure integer
+  length integer
+  experience text
+  expectations text
+}
 
-Ref: users.id < follows.following_user_id
 
-Ref: users.id < follows.followed_user_id
+Table academics {
+  Academics_Id integer [primary key]
+  Academic_Name text
+  Academics_Difficulty text
+  type text
+}
+
+
+
