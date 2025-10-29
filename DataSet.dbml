@@ -7,31 +7,23 @@ Table follows {
   created_at timestamp
 
   indexes {
-    (following_user_id, followed_user_id) [pk] // prevent duplicates
+    (following_user_id, followed_user_id) [pk] 
   }
 }
-
-// Table users {
-//   U_ID integer [primary key]
-//   U_First_Name varchar
-//   U_Last_Name varchar
-//   U_Email text
-//   U_PhoneNum varchar
-//   // created_at timestamp
-// }
 
 Table activity {
   Activity_Id integer [primary key]
   Activity_Title text
-  Activity_Price text
-  Academics_Id integer [ref: >academics.Academics_Id]
- 
+  Publisher_Id integer [ref: > activity_publisher.Publisher_Id]
+  Price_Id integer [ref: > activity_price.Price_Id]             
+  Description_Id integer [ref: > activity_details.Description_Id]
+  Academics_Id integer [ref: > academics.Academics_Id]
   difficulty_id integer [ref: > activity_difficulty.Difficulty_Id]
 }
 
 Table activity_occurrence {
   Occurrence_Id integer [primary key]
-  Activity_Id integer [not null, ref: > activity.Activity_Id] 
+  Activity_Id integer [not null, ref: > activity.Activity_Id]
   Start_Date date
   End_Date date
   Start_Time time
@@ -48,7 +40,6 @@ Table activity_difficulty {
   expectations text
 }
 
-
 Table academics {
   Academics_Id integer [primary key]
   Academic_Name text
@@ -56,5 +47,43 @@ Table academics {
   type text
 }
 
+Table activity_details {
+  Description_Id integer [primary key] 
+  Critical_Reasoning text
+  Problem_Solving text
+  Decision_Making text
+  Communications text
+  Strategic_Thinking text
+  Collaboration text
+  Creativity text
+  Story_Telling text
+}
 
+Table activity_publisher {
+  Publisher_Id integer [primary key]
+  User_Id integer [ref: > User.User_Id]
+  Primary_Instructor_Id integer [ref: > activity_primary_instructor.Activity_Primary_Instructor_Id]
+  Secondary_Id integer 
+  Last_Name text
+}
 
+Table activity_primary_instructor {
+  Activity_Primary_Instructor_Id integer [primary key] 
+  User_Id integer [ref: > User.User_Id]
+  Contacts_Id integer [ref: > User_Contacts.Contact_Id]
+}
+
+Table User_Contacts {
+  Contact_Id integer [primary key] 
+}
+
+Table User {
+  User_Id integer [primary key] 
+  User_Contacts_Id integer 
+}
+
+Table activity_price {
+  Price_Id integer [primary key] 
+  Currency varchar
+  Total integer
+}
