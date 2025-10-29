@@ -7,7 +7,7 @@ Table follows {
   created_at timestamp
 
   indexes {
-    (following_user_id, followed_user_id) [pk] 
+    (following_user_id, followed_user_id) [pk]
   }
 }
 
@@ -15,10 +15,10 @@ Table activity {
   Activity_Id integer [primary key]
   Activity_Title text
   Publisher_Id integer [ref: > activity_publisher.Publisher_Id]
-  Price_Id integer [ref: > activity_price.Price_Id]             
-  Description_Id integer [ref: > activity_details.Description_Id]
+  Price_Id integer [ref: > activity_price.Price_Id]
+  Description_Id integer [ref: > activity_skill_metrics.Description_Id]
   Academics_Id integer [ref: > academics.Academics_Id]
-  difficulty_id integer [ref: > activity_difficulty.Difficulty_Id]
+  Specifics_Id integer [ref: > activity_specifics.Specifics_Id]
 }
 
 Table activity_occurrence {
@@ -40,6 +40,18 @@ Table activity_difficulty {
   expectations text
 }
 
+Table activity_specifics {
+  Specifics_Id integer [primary key] 
+  Difficulty_Id integer [ref: > activity_difficulty.Difficulty_Id] 
+  Arts_Offered text
+  Language_Offered text
+  Math_Offered text
+  Science_Offered text
+  Humanities_Society_Offered text
+  Tech_End_Offered text
+  Life_Skills_Offered text
+}
+
 Table academics {
   Academics_Id integer [primary key]
   Academic_Name text
@@ -47,8 +59,8 @@ Table academics {
   type text
 }
 
-Table activity_details {
-  Description_Id integer [primary key] 
+Table activity_skill_metrics {
+  Description_Id integer [primary key]
   Critical_Reasoning text
   Problem_Solving text
   Decision_Making text
@@ -63,27 +75,46 @@ Table activity_publisher {
   Publisher_Id integer [primary key]
   User_Id integer [ref: > User.User_Id]
   Primary_Instructor_Id integer [ref: > activity_primary_instructor.Activity_Primary_Instructor_Id]
-  Secondary_Id integer 
+  Secondary_Id integer
   Last_Name text
 }
 
 Table activity_primary_instructor {
-  Activity_Primary_Instructor_Id integer [primary key] 
+  Activity_Primary_Instructor_Id integer [primary key]
   User_Id integer [ref: > User.User_Id]
-  Contacts_Id integer [ref: > User_Contacts.Contact_Id]
+  Bio_Id integer [ref: > User_Bio.Bio_Id]
 }
 
-Table User_Contacts {
-  Contact_Id integer [primary key] 
+Table User_Bio {
+  Bio_Id integer [primary key]
+  Bio text
+  Level_of_Formal_Education text
+  Professional_Experience text
+  LinkedIn_or_Website text
 }
 
 Table User {
-  User_Id integer [primary key] 
-  User_Contacts_Id integer 
+  User_Id integer [primary key]
+  User_Firstname text
+  User_Lastname text
+  User_Email text
+  User_Phone text
 }
 
 Table activity_price {
-  Price_Id integer [primary key] 
+  Price_Id integer [primary key]
+  Discount_Id integer [ref: > price_dicount.Discount_Id]
   Currency varchar
   Total integer
+}
+
+Table price_dicount {
+  Discount_Id integer [primary key]
+  Discount_Title text
+  Discount_Rule text
+  Discount_Percantage double // percanteage or whatever
+  Discount_Start_Date datetime
+  Discount_End_Date datetime
+  Max_Users integer
+
 }
