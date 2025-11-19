@@ -1,4 +1,38 @@
-Activity Platform Data Model
+# xanoPull helper
+
+Small helper to pull records from a Xano endpoint and pretty-print the JSON response.
+
+Prerequisites
+- Python 3.8+
+- Create a `.env` file in the repository root with a line like:
+
+```
+XANO_GET=https://your-xano-endpoint.example/api/get_records
+```
+
+Install dependencies (PowerShell):
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Run:
+
+```powershell
+python xanoPull.py
+```
+
+What changed
+- `xanoPull.py` now prints HTTP status and Content-Type, handles error objects that look like {"code":"...","message":"..."}, and prints raw response when JSON parsing fails. This should make it clear why you're seeing the `code`/`message` object.
+
+Debug tips
+- If you see an object with exactly `code` and `message`, that's an error response from Xano. Common causes:
+  - Wrong endpoint/path
+  - Missing or invalid authentication (API key)
+  - Required query parameters missing
+  - You're hitting a 4xx/5xx endpoint
+
+Check the printed HTTP status code and Content-Type first; they usually tell you what went wrong.Activity Platform Data Model
 =
 A relational schema for publishing activities, scheduling occurrences, defining academic context, skill metrics, pricing, instructors/publishers, and social follows. It is defined in DBML for easy visualization and SQL generation.​
 
