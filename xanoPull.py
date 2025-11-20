@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os, requests,json
 
 load_dotenv()
-point = os.getenv("XANO_POST")
+point = os.getenv("XANO_GET")
 
 
 """
@@ -16,15 +16,6 @@ api requieres following information:
 #activity specifics >> driving question, difficulty level, arts offered, language offered, math offered
 science offered, life skills offered difficulty level,
 start time, end time, max participants.
-
-structure :
-
-{
-  "price": {},
-  "activity_skill_metric": {},
-  "activity_specifics": {}
-  
-}
 
 """
 data = {
@@ -367,6 +358,12 @@ data6 = {
 }
 
 
-resp = requests.post(point,json=data6)
-print(resp.status_code)
-print(resp.text)
+
+resp = requests.get(point)
+data = json.loads(resp.text)
+
+readable = json.dumps(data, indent=4, sort_keys=True)
+
+print(readable)
+# for item in data:
+#     print(item)
